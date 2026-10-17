@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Design premium App Store and Play Store mockups in seconds with Mockify.">
+    <meta name="keywords" content="app store mockups, play store screenshots, mockup generator, app design">
+    <title>Mockify - Premium App Store Mockups</title>
+    <!-- html2canvas for Exporting -->
+    <script defer src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <!-- SortableJS for Drag and Drop Reordering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <!-- JSZip for Zipping Exports -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=Inter:wght@500;700;800&family=Roboto:wght@500;700;900&family=Poppins:wght@500;700;800&family=Montserrat:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/generator.css">
+</head>
+
+<body>
+
+    <!-- Modern Floating Navbar -->
+    <nav class="floating-nav">
+        <a href="/" class="nav-logo">Mockify</a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/studio/" class="nav-link active">Studio</a>
+            <div class="nav-dropdown">
+                <a href="/plans/" class="nav-link">Plans ▾</a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-content">
+                        <a href="/plans/">Standard</a>
+                        <a href="/plans/">Premium</a>
+                        <a href="/plans/">Enterprise</a>
+                    </div>
+                </div>
+            </div>
+            <a href="/contact/" class="nav-link">Contact Us</a>
+        </div>
+        <div class="nav-actions">
+            <a href="/plans/"><button class="btn-premium">Get Premium</button></a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="spinner"></div>
+            <div class="loading-text" id="loadingText">Generating Mockup...</div>
+        </div>
+
+        <div class="header">
+            <h1>Mockify Studio</h1>
+            <p>
+                1. Drag and drop whole mockups to reorder them.<br>
+                2. Choose distinct Layouts, Fonts, and Device Frames.<br>
+                3. Update Colors, edit Text, upload Screenshots, and Export!
+            </p>
+        </div>
+
+        <div class="tools-panel">
+            <div class="tool-group">
+                <label>Primary Background</label>
+                <div class="color-picker">
+                    <input type="color" id="primaryColor" value="#C4B5FD">
+                    <span id="primaryHex">#C4B5FD</span>
+                </div>
+            </div>
+            <div class="tool-group">
+                <label>Secondary Background</label>
+                <div class="color-picker">
+                    <input type="color" id="secondaryColor" value="#FBCFE8">
+                    <span id="secondaryHex">#FBCFE8</span>
+                </div>
+            </div>
+            <div class="tool-group">
+                <label>Device Color</label>
+                <div class="color-picker">
+                    <input type="color" id="deviceColor" value="#1F2330">
+                    <span id="deviceHex">#1F2330</span>
+                </div>
+            </div>
+            <div class="tool-group">
+                <label>Text Color</label>
+                <div class="color-picker">
+                    <input type="color" id="textColor" value="#231F3D">
+                    <span id="textHex">#231F3D</span>
+                </div>
+            </div>
+
+            <div class="tool-group">
+                <label>Font Family</label>
+                <select id="fontFamily">
+                    <option value="'Sora', sans-serif">Sora</option>
+                    <option value="'Inter', sans-serif">Inter</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                    <option value="'Roboto', sans-serif">Roboto</option>
+                </select>
+            </div>
+            <div class="tool-group">
+                <label>Global Device Frame</label>
+                <select id="deviceFrame">
+                    <option value="frame-island">iPhone Dynamic Island</option>
+                    <option value="frame-ios">iPhone Standard Notch</option>
+                    <option value="frame-samsung">Android Rounded (Galaxy S22)</option>
+                    <option value="frame-android">Android Sharp (S23 Ultra)</option>
+                    <option value="frame-pixel">Google Pixel</option>
+                    <option value="frame-classic">Classic iOS (Home Button)</option>
+                    <option value="frame-minimal">Minimal Bezel-less</option>
+                </select>
+            </div>
+            <button class="btn btn-green" onclick="exportAll()">📥 Export All (ZIP)</button>
+            <div class="tool-group"><label>Title Size <b id="tsVal">85</b>px</label><input type="range" id="titleSize" min="60" max="120" value="85"></div>
+            <div class="tool-group"><label>Decoration</label>
+                <select id="decor"><option value="full">Rings &amp; Glow</option><option value="glow">Glow only</option><option value="none">Minimal</option></select></div>
+            <div class="tool-group"><label>Badge</label>
+                <select id="badge"><option value="on">Show</option><option value="off">Hide</option></select></div>
+            <button class="btn btn-soft" id="shuffleBtn">🎲 Shuffle look</button>
+            <div class="tool-row"><label>Color Palettes</label><div class="pal-row" id="palRow"></div></div>
+            <div class="tool-row"><label>Background Style</label><div class="bg-grid" id="bgGrid"></div></div>
+            <input type="file" id="bgFile" accept="image/*" hidden>
+        </div>
+
+        <!-- Container for SortableJS -->
+        <div class="mockups-grid" id="sortable-grid">
+
+            <!-- ======================= SCREENS (1 to 8) ======================= -->
+
+            <!-- Screen 1 -->
+            <div class="mockup-card">
+                <div class="local-tools">
+                    <span>Screen 1</span>
+                    <div style="display: flex; gap: 8px;">
+                        <select class="layout-select" onchange="changeLayout(1, this.value)">
+                            <option value="layout-center" selected>Center Layout</option>
+                            <option value="layout-left">Left Aligned</option>
+                            <option value="layout-right">Right Aligned</option>
+                            <option value="layout-tilt">Tilt Center</option>
+                            <option value="layout-float">Float Top</option>
+                        </select>
+                        <button class="btn-small" onclick="exportSingle(1)" title="Download this screen">⬇️</button>
+                    </div>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="mockup-container bg-1 layout-center" id="mockup-1">
+                        <div class="text-area"><div class="chip" contenteditable="true">★ Featured</div>
+                            <div class="title" contenteditable="true">Freelance Marketplace</div>
+                            <div class="subtitle" contenteditable="true">Pakistan's 1st platform where skills meet
+                                endless
+                                opportunities.</div>
+                        </div>
+                        <div class="phone-frame frame-island">
+                            <div class="notch"></div>
+                            <div class="screen" onclick="triggerUpload(1)">
+                                <div class="img-placeholder" id="placeholder-1">Upload Screen 1</div>
+                                <img id="img-1" alt="Upload">
+                                <div class="upload-overlay">Upload</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 2 -->
+            <div class="mockup-card">
+                <div class="local-tools">
+                    <span>Screen 2</span>
+                    <div style="display: flex; gap: 8px;">
+                        <select class="layout-select" onchange="changeLayout(2, this.value)">
+                            <option value="layout-center">Center Layout</option>
+                            <option value="layout-left" selected>Left Aligned</option>
+                            <option value="layout-right">Right Aligned</option>
+                            <option value="layout-tilt">Tilt Center</option>
+                            <option value="layout-float">Float Top</option>
+                        </select>
+                        <button class="btn-small" onclick="exportSingle(2)" title="Download this screen">⬇️</button>
+                    </div>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="mockup-container bg-2 layout-left" id="mockup-2">
+                        <div class="text-area"><div class="chip" contenteditable="true">★ Featured</div>
+                            <div class="title" contenteditable="true">Freelancer Dashboard</div>
+                            <div class="subtitle" contenteditable="true">Track your stats, active orders, and earnings
+                                at a
+                                glance.</div>
+                        </div>
+                        <div class="phone-frame frame-island">
+                            <div class="notch"></div>
+                            <div class="screen" onclick="triggerUpload(2)">
+                                <div class="img-placeholder" id="placeholder-2">Upload Screen 2</div>
+                                <img id="img-2" alt="Upload">
+                                <div class="upload-overlay">Upload</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3 -->
+            <div class="mockup-card">
+                <div class="local-tools">
+                    <span>Screen 3</span>
+                    <div style="display: flex; gap: 8px;">
+                        <select class="layout-select" onchange="changeLayout(3, this.value)">
+                            <option value="layout-center">Center Layout</option>
+                            <option value="layout-left">Left Aligned</option>
+                            <option value="layout-right" selected>Right Aligned</option>
+                            <option value="layout-tilt">Tilt Center</option>
+                            <option value="layout-float">Float Top</option>
+                        </select>
+                        <button class="btn-small" onclick="exportSingle(3)" title="Download this screen">⬇️</button>
+                    </div>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="mockup-container bg-3 layout-right" id="mockup-3">
+                        <div class="text-area"><div class="chip" contenteditable="true">★ Featured</div>
+                            <div class="title" contenteditable="true">Discover Top Talent</div>
+                            <div class="subtitle" contenteditable="true">Search across categories to find the perfect
+                                expert
+                                for your job.</div>
+                        </div>
+                        <div class="phone-frame frame-island">
+                            <div class="notch"></div>
+                            <div class="screen" onclick="triggerUpload(3)">
+                                <div class="img-placeholder" id="placeholder-3">Upload Screen 3</div>
+                                <img id="img-3" alt="Upload">
+                                <div class="upload-overlay">Upload</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 4 -->
+            <div class="mockup-card">
+                <div class="local-tools">
+                    <span>Screen 4</span>
+                    <div style="display: flex; gap: 8px;">
+                        <select class="layout-select" onchange="changeLayout(4, this.value)">
+                            <option value="layout-center">Center Layout</option>
+                            <option value="layout-left">Left Aligned</option>
+                            <option value="layout-right">Right Aligned</option>
+                            <option value="layout-tilt" selected>Tilt Center</option>
+                            <option value="layout-float">Float Top</option>
+                        </select>
+                        <button class="btn-small" onclick="exportSingle(4)" title="Download this screen">⬇️</button>
+                    </div>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="mockup-container bg-4 layout-tilt" id="mockup-4">
+                        <div class="text-area"><div class="chip" contenteditable="true">★ Featured</div>
+                            <div class="title" contenteditable="true">Real-Time Chat</div>
+                            <div class="subtitle" contenteditable="true">Collaborate easily with instant messaging and
+                                notifications.</div>
+                        </div>
+                        <div class="phone-frame frame-island">
+                            <div class="notch"></div>
+                            <div class="screen" onclick="triggerUpload(4)">
+                                <div class="img-placeholder" id="placeholder-4">Upload Screen 4</div>
+                                <img id="img-4" alt="Upload">
+                                <div class="upload-overlay">Upload</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 5 -->
+            <div class="mockup-card">
+                <div class="local-tools">
+                    <span>Screen 5</span>
+                    <div style="display: flex; gap: 8px;">
+                        <select class="layout-select" onchange="changeLayout(5, this.value)">
+                            <option value="layout-center" selected>Center Layout</option>
+                            <option value="layout-left">Left Aligned</option>
+                            <option value="layout-right">Right Aligned</option>
+                            <option value="layout-tilt">Tilt Center</option>
+                            <option value="layout-float">Float Top</option>
+                        </select>
+                        <button class="btn-small" onclick="exportSingle(5)" title="Download this screen">⬇️</button>
+                    </div>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="mockup-container bg-5 layout-center" id="mockup-5">
+                        <div class="text-area"><div class="chip" contenteditable="true">★ Featured</div>
+                            <div class="title" contenteditable="true">Manage Your Work</div>
+                            <div class="subtitle" contenteditable="true">Keep track of active, completed, and cancelled
+                                orders.</div>
+                        </div>
+                        <div class="phone-frame frame-island">
+                            <div class="notch"></div>
+                            <div class="screen" onclick="triggerUpload(5)">
+                                <div class="img-placeholder" id="placeholder-5">Upload Screen 5</div>
+                                <img id="img-5" alt="Upload">
+                                <div class="upload-overlay">Upload</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 6 -->
+            <div class="mockup-card">
+                <div class="local-tools">
+                    <span>Screen 6</span>
+                    <div style="display: flex; gap: 8px;">
+                        <select class="layout-select" onchange="changeLayout(6, this.value)">
+                            <option value="layout-center">Center Layout</option>
+                            <option value="layout-left" selected>Left Aligned</option>
+                            <option value="layout-right">Right Aligned</option>
+                            <option value="layout-tilt">Tilt Center</option>
+                            <option value="layout-float">Float Top</option>
+                        </select>
+                        <button class="btn-small" onclick="exportSingle(6)" title="Download this screen">⬇️</button>
+                    </div>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="mockup-container bg-6 layout-left" id="mockup-6">
+                        <div class="text-area"><div class="chip" contenteditable="true">★ Featured</div>
+                            <div class="title" contenteditable="true">Offer Your Services</div>
+                            <div class="subtitle" contenteditable="true">Create professional gigs easily to attract
+                                global
+                                clients.</div>
+                        </div>
+                        <div class="phone-frame frame-island">
+                            <div class="notch"></div>
+                            <div class="screen" onclick="triggerUpload(6)">
+                                <div class="img-placeholder" id="placeholder-6">Upload Screen 6</div>
+                                <img id="img-6" alt="Upload">
+                                <div class="upload-overlay">Upload</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 7 -->
+            <div class="mockup-card">
+                <div class="local-tools">
+                    <span>Screen 7</span>
+                    <div style="display: flex; gap: 8px;">
+                        <select class="layout-select" onchange="changeLayout(7, this.value)">
+                            <option value="layout-center">Center Layout</option>
+                            <option value="layout-left">Left Aligned</option>
+                            <option value="layout-right">Right Aligned</option>
+                            <option value="layout-tilt">Tilt Center</option>
+                            <option value="layout-float" selected>Float Top</option>
+                        </select>
+                        <button class="btn-small" onclick="exportSingle(7)" title="Download this screen">⬇️</button>
+                    </div>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="mockup-container bg-7 layout-float" id="mockup-7">
+                        <div class="text-area"><div class="chip" contenteditable="true">★ Featured</div>
+                            <div class="title" contenteditable="true">Build Your Portfolio</div>
+                            <div class="subtitle" contenteditable="true">Showcase your skills and ratings to win more
+                                projects.</div>
+                        </div>
+                        <div class="phone-frame frame-island">
+                            <div class="notch"></div>
+                            <div class="screen" onclick="triggerUpload(7)">
+                                <div class="img-placeholder" id="placeholder-7">Upload Screen 7</div>
+                                <img id="img-7" alt="Upload">
+                                <div class="upload-overlay">Upload</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 8 -->
+            <div class="mockup-card">
+                <div class="local-tools">
+                    <span>Screen 8</span>
+                    <div style="display: flex; gap: 8px;">
+                        <select class="layout-select" onchange="changeLayout(8, this.value)">
+                            <option value="layout-center" selected>Center Layout</option>
+                            <option value="layout-left">Left Aligned</option>
+                            <option value="layout-right">Right Aligned</option>
+                            <option value="layout-tilt">Tilt Center</option>
+                            <option value="layout-float">Float Top</option>
+                        </select>
+                        <button class="btn-small" onclick="exportSingle(8)" title="Download this screen">⬇️</button>
+                    </div>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="mockup-container bg-8 layout-center" id="mockup-8">
+                        <div class="text-area"><div class="chip" contenteditable="true">★ Featured</div>
+                            <div class="title" contenteditable="true">Join Today</div>
+                            <div class="subtitle" contenteditable="true">Pakistan's most trusted freelance marketplace
+                                is
+                                waiting for you.</div>
+                        </div>
+                        <div class="phone-frame frame-island">
+                            <div class="notch"></div>
+                            <div class="screen" onclick="triggerUpload(8)">
+                                <div class="img-placeholder" id="placeholder-8">Upload Screen 8</div>
+                                <img id="img-8" alt="Upload">
+                                <div class="upload-overlay">Upload</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Hidden file input for uploading screenshots -->
+        <input type="file" id="fileInput" accept="image/*" onchange="handleUpload(event)" style="display: none;">
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>Mockify</h2>
+                <p>The ultimate tool for creating premium App Store and Play Store mockups directly in your browser. No
+                    design skills required.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/plans/">Pricing Plans</a></li>
+                    <li><a href="/contact/">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Mockify Studio. All rights reserved.
+        </div>
+    </footer>
+
+    <script defer src="/js/backgrounds.js"></script>
+    <script defer src="/js/generator.js"></script>
+</body>
+
+</html>

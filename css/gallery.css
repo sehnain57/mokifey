@@ -1,0 +1,15 @@
+.gal{width:100%;max-width:1240px;margin:0 auto;padding:130px 24px 80px}
+.back{display:inline-block;color:var(--brand);font-weight:700;font-size:14px;text-decoration:none;margin-bottom:18px}
+.gal h1{font-size:46px;letter-spacing:-1.5px;margin:0 0 10px;background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:up .7s cubic-bezier(.16,1,.3,1) backwards}
+.gal .sub{color:var(--muted);font-size:17px;margin:0 0 40px;max-width:620px;animation:up .7s .08s cubic-bezier(.16,1,.3,1) backwards}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:30px;justify-items:center}
+.g-card{animation:up .7s cubic-bezier(.16,1,.3,1) calc(var(--i)*60ms) backwards;padding:0 0 24px}
+.gl{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid rgba(109,90,230,.1);border-radius:24px;padding:14px;box-shadow:0 12px 32px rgba(109,90,230,.1);transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
+.gl:hover{transform:translateY(-10px);box-shadow:0 30px 56px rgba(109,90,230,.24)}
+.gw{width:270px;height:480px;position:relative;overflow:hidden;border-radius:14px;contain:strict}
+.gw .mockup-container{transform:scale(.25);transition:none}
+.gi{display:flex;justify-content:space-between;align-items:center;margin:14px 6px 4px;font-size:14px}
+.gi span{color:var(--muted);font-size:12px}
+.gl .go{margin:6px;font-weight:700;font-size:14px;color:var(--brand)}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

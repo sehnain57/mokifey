@@ -2,7 +2,7 @@
 // SortableJS Drag & Drop Reordering
 // ==========================================
 var grid = document.getElementById('sortable-grid');
-var sortable = Sortable.create(grid, {
+var sortable = window.Sortable && Sortable.create(grid, {
     animation: 200,
     ghostClass: 'sortable-ghost',
     handle: '.mockup-card',
@@ -15,27 +15,18 @@ var sortable = Sortable.create(grid, {
 // ==========================================
 const root = document.documentElement;
 
+let bgKey = 'gradient';
 function updateGradients() {
-    const primaryInput = document.getElementById('primaryColor');
-    const secondaryInput = document.getElementById('secondaryColor');
-    
-    if(!primaryInput || !secondaryInput) return; // Prevent errors on pages without generator
-    
-    const p = primaryInput.value;
-    const s = secondaryInput.value;
-
-    document.getElementById('mockup-1').style.backgroundImage = `linear-gradient(120deg, ${p} 0%, ${s} 90%)`;
-    document.getElementById('mockup-2').style.backgroundImage = `linear-gradient(135deg, ${s} 20%, ${p} 100%)`;
-    document.getElementById('mockup-3').style.backgroundImage = `linear-gradient(315deg, ${p} 0%, ${s} 75%)`;
-    document.getElementById('mockup-4').style.backgroundImage = `linear-gradient(180deg, ${s} 30%, ${p} 100%)`;
-    document.getElementById('mockup-5').style.backgroundImage = `linear-gradient(45deg, ${p} 0%, ${s} 65%)`;
-    document.getElementById('mockup-6').style.backgroundImage = `linear-gradient(160deg, ${p} 0%, ${s} 70%)`;
-    document.getElementById('mockup-7').style.backgroundImage = `linear-gradient(60deg, ${s} 30%, ${p} 100%)`;
-    document.getElementById('mockup-8').style.backgroundImage = `linear-gradient(180deg, ${p} 0%, ${s} 85%)`;
+    const pi = document.getElementById('primaryColor'), si = document.getElementById('secondaryColor');
+    if (!pi || !si || !window.MK) return;
+    for (let i = 1; i <= 8; i++) MK.apply(document.getElementById('mockup-' + i), bgKey, pi.value, si.value, i - 1, 1);
+    if (window.MK_thumbs) MK_thumbs();
 }
 
 // Initialize explicit hex backgrounds
 updateGradients();
+let gradRaf;
+function scheduleGradients(){ cancelAnimationFrame(gradRaf); gradRaf = requestAnimationFrame(updateGradients); }
 
 // Colors
 const primaryColor = document.getElementById('primaryColor');
@@ -43,7 +34,7 @@ if (primaryColor) {
     primaryColor.addEventListener('input', (e) => {
         document.getElementById('primaryHex').innerText = e.target.value.toUpperCase();
         root.style.setProperty('--primary', e.target.value);
-        updateGradients();
+        scheduleGradients();
     });
 }
 
@@ -52,8 +43,7 @@ if (secondaryColor) {
     secondaryColor.addEventListener('input', (e) => {
         document.getElementById('secondaryHex').innerText = e.target.value.toUpperCase();
         root.style.setProperty('--secondary', e.target.value);
-        root.style.setProperty('--bg-color', e.target.value);
-        updateGradients();
+        scheduleGradients();
     });
 }
 
@@ -144,8 +134,9 @@ function hideLoading() {
 }
 
 window.exportSingle = async function(id) {
+    if (window.event && window.event.isTrusted === false) return; // only real clicks export
     showLoading('Generating High-Quality Image...');
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 400));
 
     const node = document.getElementById('mockup-' + id);
 
@@ -195,12 +186,13 @@ window.exportSingle = async function(id) {
 }
 
 window.exportAll = async function() {
+    if (window.event && window.event.isTrusted === false) return;
     const btn = document.querySelector('.btn-green');
     btn.innerText = '⏳ Generating ZIP...';
     btn.disabled = true;
 
     showLoading('Generating Mockups ZIP...');
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 400));
 
     try {
         // Initialize JSZip
@@ -270,3 +262,91 @@ window.exportAll = async function() {
     btn.disabled = false;
     setTimeout(() => btn.innerText = '📥 Export All (ZIP)', 3000);
 }
+
+// ==========================================
+// Presets from landing page: /studio/?layout=layout-tilt&frame=frame-pixel
+// ==========================================
+;(function () {
+    const q = new URLSearchParams(location.search);
+    const l = q.get('layout');
+    if (l) {
+        document.querySelectorAll('.mockup-container').forEach(m => {
+            const id = m.id.split('-')[1];
+            changeLayout(id, l);
+            const s = m.closest('.mockup-card').querySelector('.layout-select');
+            if (s) s.value = l;
+        });
+    }
+    ['primaryColor:p','secondaryColor:s','deviceColor:d','textColor:t'].forEach(x => {
+        const [id, k] = x.split(':'), v = q.get(k), el = document.getElementById(id);
+        if (el && /^[0-9a-fA-F]{6}$/.test(v || '')) { el.value = '#' + v; el.dispatchEvent(new Event('input')); }
+    });
+    const f = q.get('frame');
+    if (f && deviceFrame) { deviceFrame.value = f; deviceFrame.dispatchEvent(new Event('change')); }
+})();
+
+// ==========================================
+// Backgrounds, palettes and style controls
+// ==========================================
+;(function () {
+    const grid = document.getElementById('bgGrid');
+    if (!grid || !window.MK) return;
+    const $ = id => document.getElementById(id);
+    const setVal = (id, v) => { const el = $(id); el.value = v; el.dispatchEvent(new Event('input')); };
+    const isDark = k => k !== 'image' && MK.BG[k] && MK.BG[k].dark;
+
+    grid.innerHTML = Object.entries(MK.BG).map(([k, v]) => `<button class="bg-opt" data-k="${k}" title="${v.n}"><i></i><span>${v.n}</span></button>`).join('')
+        + '<button class="bg-opt" data-k="image" title="Upload image"><i class="up">＋</i><span>Upload</span></button>';
+    window.MK_thumbs = function () {
+        const p = $('primaryColor').value, s = $('secondaryColor').value;
+        grid.querySelectorAll('.bg-opt').forEach(b => {
+            const k = b.dataset.k;
+            if (k === 'image' && !MK.image) return;
+            MK.apply(b.firstChild, k, p, s, 0, .2);
+            if (k === 'image') b.firstChild.textContent = '';
+        });
+    };
+    function pick(k) {
+        bgKey = k;
+        grid.querySelectorAll('.bg-opt').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+        fixText();
+        updateGradients();
+    }
+    function fixText() { // keep text readable on dark backgrounds
+        const t = $('textColor').value.toLowerCase();
+        if (isDark(bgKey) && t !== '#ffffff') setVal('textColor', '#ffffff');
+        else if (!isDark(bgKey) && t === '#ffffff' && !window.__lightPal) setVal('textColor', '#231f3d');
+    }
+    grid.addEventListener('click', e => {
+        const b = e.target.closest('.bg-opt'); if (!b) return;
+        if (b.dataset.k === 'image') $('bgFile').click(); else pick(b.dataset.k);
+    });
+    $('bgFile').addEventListener('change', e => {
+        const f = e.target.files[0]; if (!f) return;
+        const r = new FileReader();
+        r.onload = ev => { MK.image = ev.target.result; pick('image'); };
+        r.readAsDataURL(f);
+    });
+
+    // Palettes
+    function applyPal(p) {
+        window.__lightPal = p[4].toUpperCase() === 'FFFFFF';
+        setVal('primaryColor', '#' + p[1]); setVal('secondaryColor', '#' + p[2]);
+        setVal('deviceColor', '#' + p[3]); setVal('textColor', '#' + p[4]);
+        if (isDark(bgKey)) setVal('textColor', '#ffffff');
+    }
+    $('palRow').innerHTML = MK.PAL.map((p, i) => `<button class="pal" data-i="${i}" title="${p[0]}" style="background:linear-gradient(135deg,#${p[1]},#${p[2]})"><i style="background:#${p[3]}"></i></button>`).join('');
+    $('palRow').addEventListener('click', e => { const b = e.target.closest('.pal'); if (b) applyPal(MK.PAL[b.dataset.i]); });
+
+    // Style controls
+    $('titleSize').addEventListener('input', e => { root.style.setProperty('--title-size', e.target.value + 'px'); $('tsVal').textContent = e.target.value; });
+    $('decor').addEventListener('change', e => root.dataset.decor = e.target.value);
+    $('badge').addEventListener('change', e => root.dataset.badge = e.target.value);
+    $('shuffleBtn').addEventListener('click', () => {
+        const keys = Object.keys(MK.BG), r = a => a[Math.floor(Math.random() * a.length)];
+        applyPal(r(MK.PAL)); pick(r(keys));
+    });
+
+    const bg = new URLSearchParams(location.search).get('bg');
+    pick(MK.BG[bg] ? bg : 'gradient');
+})();
