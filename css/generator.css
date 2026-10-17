@@ -1,0 +1,599 @@
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 80px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .header p {
+            color: #a1a1aa;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Top Tools Panel */
+        .tools-panel {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 30px;
+            border-radius: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            justify-content: center;
+            max-width: 1400px;
+        }
+
+        .tool-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tool-group label {
+            font-size: 13px;
+            color: #d4d4d8;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .color-picker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+
+        select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #18181b;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            background: var(--primary);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            font-family: 'Sora', sans-serif;
+            margin-left: 10px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-green {
+            background: #10b981;
+        }
+
+        .btn-green:hover {
+            background: #059669;
+        }
+
+        /* Small Buttons (like single download) */
+        .btn-small {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-small:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mockup Grid for SortableJS */
+        .mockups-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            max-width: 1500px;
+            /* Padding to allow grabbing edges */
+            padding: 20px;
+        }
+
+        /* Sortable Ghost State */
+        .sortable-ghost {
+            opacity: 0.4;
+            transform: scale(0.95);
+        }
+
+        /* Mockup Card Wrapper */
+        .mockup-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: grab;
+            transition: transform 0.2s;
+        }
+
+        .mockup-card:active {
+            cursor: grabbing;
+        }
+
+        .mockup-card:hover {
+            border-color: var(--primary);
+        }
+
+        /* Local Layout Selector */
+        .local-tools {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .local-tools span {
+            font-size: 14px;
+            color: #a1a1aa;
+            font-weight: 700;
+        }
+
+        .local-tools select {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* Exact 1080x1920 scaling wrapper */
+        .mockup-wrapper {
+            width: 324px;
+            /* 1080 * 0.3 */
+            height: 576px;
+            /* 1920 * 0.3 */
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            cursor: default;
+            /* Keep default inside canvas */
+        }
+
+        .mockup-container {
+            width: 1080px;
+            height: 1920px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: scale(0.3);
+            transform-origin: top left;
+            overflow: hidden;
+            background: var(--secondary);
+            font-family: var(--font-family);
+            transition: all 0.3s ease;
+        }
+
+        /* Explicit inline gradients are now injected via Javascript to ensure html2canvas compatibility */
+
+        .text-area {
+            position: absolute;
+            z-index: 10;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .title {
+            font-size: 85px;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.2;
+            color: var(--text-color);
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            letter-spacing: -1px;
+            outline: none;
+            cursor: text;
+        }
+
+        .subtitle {
+            font-size: 40px;
+            font-weight: 500;
+            margin-top: 35px;
+            color: var(--text-color);
+            opacity: 0.85;
+            line-height: 1.4;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            outline: none;
+            cursor: text;
+        }
+
+        /* =========================================
+           Realistic Phone Frame Engine 
+           ========================================= */
+        .phone-frame {
+            position: absolute;
+            background: var(--device-color);
+            z-index: 5;
+            box-sizing: border-box;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 60px 120px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Frame: iOS Standard Notch */
+        .frame-ios {
+            width: 820px;
+            height: 1700px;
+            border-radius: 120px;
+            padding: 24px;
+        }
+
+        .frame-ios .notch {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260px;
+            height: 75px;
+            background: var(--device-color);
+            border-radius: 0 0 40px 40px;
+            z-index: 20;
+            display: block;
+        }
+
+        .frame-ios .screen {
+            border-radius: 96px;
+        }
+
+        /* Frame: Dynamic Island */
+        .frame-island {
+            width: 820px;
+            height: 1700px;
+            border-radius: 140px;
+            padding: 20px;
+        }
+
+        .frame-island .notch {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 65px;
+            background: var(--device-color);
+            border-radius: 35px;
+            z-index: 20;
+            display: block;
+        }
+
+        .frame-island .screen {
+            border-radius: 120px;
+        }
+
+        /* Frame: Android Sharp (e.g. S23 Ultra) */
+        .frame-android {
+            width: 820px;
+            height: 1750px;
+            border-radius: 30px;
+            padding: 16px 12px;
+        }
+
+        .frame-android .notch {
+            position: absolute;
+            top: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45px;
+            height: 45px;
+            background: var(--device-color);
+            border-radius: 50%;
+            z-index: 20;
+            display: block;
+        }
+
+        .frame-android .screen {
+            border-radius: 18px;
+        }
+
+        /* Frame: Android Rounded (e.g. Galaxy S22) */
+        .frame-samsung {
+            width: 820px;
+            height: 1700px;
+            border-radius: 100px;
+            padding: 20px;
+        }
+
+        .frame-samsung .notch {
+            position: absolute;
+            top: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45px;
+            height: 45px;
+            background: var(--device-color);
+            border-radius: 50%;
+            z-index: 20;
+            display: block;
+        }
+
+        .frame-samsung .screen {
+            border-radius: 80px;
+        }
+
+        /* Frame: Google Pixel */
+        .frame-pixel {
+            width: 820px;
+            height: 1700px;
+            border-radius: 70px;
+            padding: 24px;
+        }
+
+        .frame-pixel .notch {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45px;
+            height: 45px;
+            background: var(--device-color);
+            border-radius: 50%;
+            z-index: 20;
+            display: block;
+        }
+
+        .frame-pixel .screen {
+            border-radius: 46px;
+        }
+
+        /* Frame: Classic iOS (Home Button) */
+        .frame-classic {
+            width: 820px;
+            height: 1700px;
+            border-radius: 90px;
+            padding: 160px 24px;
+            /* Massive top and bottom bezels */
+        }
+
+        .frame-classic .notch {
+            /* This will act as the home button */
+            position: absolute;
+            bottom: 40px;
+            top: auto;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: var(--device-color);
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.4);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 20;
+            display: block;
+        }
+
+        .frame-classic .screen {
+            border-radius: 8px;
+        }
+
+        /* Classic square screen corners */
+
+        /* Frame: Minimal */
+        .frame-minimal {
+            width: 820px;
+            height: 1700px;
+            border-radius: 40px;
+            padding: 0px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+        }
+
+        .frame-minimal .notch {
+            display: none;
+        }
+
+        .frame-minimal .screen {
+            border-radius: 40px;
+        }
+
+        /* Screen inner */
+        .screen {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #0f172a;
+            position: relative;
+            transition: border-radius 0.4s;
+        }
+
+        /* Placeholder instead of img to prevent Canvas Taint */
+        .img-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f172a;
+            color: #71717a;
+            font-size: 40px;
+            font-weight: bold;
+            font-family: sans-serif;
+            text-align: center;
+        }
+
+        .screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            display: none;
+            /* hidden until uploaded */
+        }
+
+        .upload-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            color: white;
+            backdrop-filter: blur(4px);
+        }
+
+        .screen:hover .upload-overlay {
+            opacity: 1;
+        }
+
+        /* =========================================
+           Loading Overlay
+           ========================================= */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 1);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        /* =========================================
+           Layout Presets (Controlled via JS dropdown) 
+           ========================================= */
+
+        .layout-center .text-area {
+            top: 160px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 0 80px;
+            box-sizing: border-box;
+        }
+
+        .layout-center .phone-frame {
+            top: 580px;
+            left: 130px;
+            transform: rotate(0deg);
+        }
+
+        .layout-left .text-area {
+            top: 250px;
+            left: 90px;
+            width: 900px;
+            text-align: left;
+        }
+
+        .layout-left .phone-frame {
+            top: 680px;
+            left: 400px;
+            transform: rotate(-6deg);
+        }
+
+        .layout-right .text-area {
+            top: 250px;
+            right: 90px;
+            width: 900px;
+            text-align: right;
+            left: auto;
+        }
+
+        .layout-right .phone-frame {
+            top: 680px;
+            left: -140px;
+            transform: rotate(6deg);
+        }
+
+        .layout-tilt .text-area {
+            top: 160px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 0 80px;
+            box-sizing: border-box;
+        }
+
+        .layout-tilt .phone-frame {
+            top: 580px;
+            left: 130px;
+            transform: rotate(8deg);
+        }
+
+        .layout-float .text-area {
+            top: 1500px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 0 80px;
+            box-sizing: border-box;
+        }
+
+        .layout-float .phone-frame {
+            top: -300px;
+            left: 130px;
+            transform: rotate(0deg);
+        }

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact the Mockify team for support, feature requests, or enterprise inquiries.">
+    <meta name="keywords" content="mockify contact, mockup support, app store screenshots help">
+    <title>Contact Us - Mockify</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <style>
+        .page-header {
+            text-align: center;
+            margin: 120px 0 60px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, var(--primary), #ff8a00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            color: #a1a1aa;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto 100px;
+        }
+
+        .contact-info {
+            flex: 1 1 300px;
+            background: linear-gradient(135deg, rgba(240, 89, 31, 0.1), rgba(2, 6, 23, 0.5));
+            border: 1px solid rgba(240, 89, 31, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(240, 89, 31, 0.1) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .info-item {
+            z-index: 1;
+        }
+
+        .info-item h3 {
+            font-size: 18px;
+            color: white;
+            margin: 0 0 8px;
+        }
+
+        .info-item p {
+            color: #a1a1aa;
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .contact-form-container {
+            flex: 2 1 400px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #d4d4d8;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 15px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 0 3px rgba(240, 89, 31, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Modern Floating Navbar -->
+    <nav class="floating-nav">
+        <a href="/" class="nav-logo">Mockify</a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <div class="nav-dropdown">
+                <a href="/plans/" class="nav-link">Plans ▾</a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-content">
+                        <a href="/plans/">Standard</a>
+                        <a href="/plans/">Premium</a>
+                        <a href="/plans/">Enterprise</a>
+                    </div>
+                </div>
+            </div>
+            <a href="/contact/" class="nav-link active">Contact Us</a>
+        </div>
+        <div class="nav-actions">
+            <a href="/plans/"><button class="btn-premium">Get Premium</button></a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Let's build something great.</h1>
+            <p>Have questions about Mockify or need custom enterprise solutions? Drop us a line.</p>
+        </div>
+
+        <div class="contact-wrapper">
+            <!-- Left Info Panel -->
+            <div class="contact-info">
+                <div class="info-item">
+                    <h3>Chat with us</h3>
+                    <p>Our friendly team is here to help.</p>
+                    <p style="color: var(--primary); font-weight: 600; margin-top: 8px;">hello@mockify.studio</p>
+                </div>
+                <div class="info-item">
+                    <h3>Office</h3>
+                    <p>Come say hello at our HQ.</p>
+                    <p style="margin-top: 8px;">100 Smith Street<br>Collingwood VIC 3066 AU</p>
+                </div>
+                <div class="info-item">
+                    <h3>Phone</h3>
+                    <p>Mon-Fri from 8am to 5pm.</p>
+                    <p style="color: var(--primary); font-weight: 600; margin-top: 8px;">+1 (555) 000-0000</p>
+                </div>
+            </div>
+
+            <!-- Right Form Panel -->
+            <div class="contact-form-container">
+                <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Thanks for reaching out! We will get back to you shortly.');">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required placeholder="First name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required placeholder="Last name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required placeholder="you@company.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required placeholder="Tell us how we can help..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>Mockify</h2>
+                <p>The ultimate tool for creating premium App Store and Play Store mockups directly in your browser. No design skills required.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/plans/">Pricing Plans</a></li>
+                    <li><a href="/contact/">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Mockify Studio. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

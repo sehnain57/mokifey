@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Choose the right Mockify plan for your needs. Simple, transparent pricing for premium mockup generation.">
+    <meta name="keywords" content="mockify pricing, mockup generator cost, premium app mockups">
+    <title>Pricing Plans - Mockify</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <style>
+        .page-header {
+            text-align: center;
+            margin: 120px 0 60px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, var(--primary), #ff8a00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            color: #a1a1aa;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pricing-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        @media (min-width: 1024px) {
+            .pricing-grid {
+                flex-wrap: nowrap;
+                align-items: center; /* Center them so the popular card stands out if it's scaled */
+            }
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            flex: 1 1 300px; /* Allow them to fill available space but default to 300px */
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary);
+            background: linear-gradient(180deg, rgba(240, 89, 31, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
+            box-shadow: 0 0 40px rgba(240, 89, 31, 0.15);
+        }
+
+        @media (min-width: 1024px) {
+            .pricing-card.popular {
+                transform: scale(1.05);
+                z-index: 10;
+            }
+            .pricing-card.popular:hover {
+                transform: scale(1.05) translateY(-10px);
+                box-shadow: 0 30px 60px rgba(240, 89, 31, 0.3);
+            }
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .plan-desc {
+            color: #a1a1aa;
+            font-size: 14px;
+            margin-bottom: 30px;
+            min-height: 40px;
+        }
+
+        .plan-price {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .plan-price span {
+            font-size: 16px;
+            color: #a1a1aa;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 40px;
+            flex: 1;
+        }
+
+        .plan-features li {
+            margin-bottom: 16px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            color: #d4d4d8;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: 800;
+            margin-right: 12px;
+        }
+
+        .btn-plan {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Modern Floating Navbar -->
+    <nav class="floating-nav">
+        <a href="/" class="nav-logo">Mockify</a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <div class="nav-dropdown">
+                <a href="/plans/" class="nav-link active">Plans ▾</a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-content">
+                        <a href="/plans/">Standard</a>
+                        <a href="/plans/">Premium</a>
+                        <a href="/plans/">Enterprise</a>
+                    </div>
+                </div>
+            </div>
+            <a href="/contact/" class="nav-link">Contact Us</a>
+        </div>
+        <div class="nav-actions">
+            <a href="/plans/"><button class="btn-premium">Get Premium</button></a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Simple, Transparent Pricing</h1>
+            <p>Unlock the full power of Mockify and create stunning App Store assets that drive downloads.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Standard Plan -->
+            <div class="pricing-card" id="standard">
+                <div class="plan-name">Standard</div>
+                <div class="plan-desc">Perfect for indie developers and small projects.</div>
+                <div class="plan-price">$9<span>/mo</span></div>
+                <ul class="plan-features">
+                    <li>Basic Device Frames</li>
+                    <li>720p Resolution Exports</li>
+                    <li>Standard Layouts</li>
+                    <li>Email Support</li>
+                </ul>
+                <button class="btn-plan btn-secondary">Get Started</button>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="pricing-card popular" id="premium">
+                <div class="popular-badge">Most Popular</div>
+                <div class="plan-name">Premium</div>
+                <div class="plan-desc">For professionals who need high-quality marketing assets.</div>
+                <div class="plan-price">$29<span>/mo</span></div>
+                <ul class="plan-features">
+                    <li>All Device Frames (iOS, Android, Minimal)</li>
+                    <li>4K High-Res Exports</li>
+                    <li>Custom Fonts & Gradients</li>
+                    <li>Priority Support</li>
+                    <li>ZIP Bulk Export</li>
+                </ul>
+                <button class="btn-plan btn-premium">Upgrade to Premium</button>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="pricing-card" id="enterprise">
+                <div class="plan-name">Enterprise</div>
+                <div class="plan-desc">For agencies and teams managing multiple apps.</div>
+                <div class="plan-price">$99<span>/mo</span></div>
+                <ul class="plan-features">
+                    <li>Unlimited Exports</li>
+                    <li>Team Collaboration</li>
+                    <li>Custom Branding</li>
+                    <li>API Access</li>
+                    <li>24/7 Dedicated Support</li>
+                </ul>
+                <button class="btn-plan btn-secondary">Contact Sales</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>Mockify</h2>
+                <p>The ultimate tool for creating premium App Store and Play Store mockups directly in your browser. No design skills required.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/plans/">Pricing Plans</a></li>
+                    <li><a href="/contact/">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Mockify Studio. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
